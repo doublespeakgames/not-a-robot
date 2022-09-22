@@ -4,7 +4,6 @@
 
 	let width: number;
 
-	$: text = roundToPlaces($compass, 2);
 	$: cosVal = Math.cos(($compass * Math.PI) / 180) / 2 + 0.5;
 	$: sinVal = Math.sin(($compass * Math.PI) / 180) / 2 + 0.5;
 </script>

@@ -1,13 +1,13 @@
 <script type="ts">
-	import Trace from './Trace.svelte';
+	import Speak from './Speak.svelte';
 </script>
 
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="trace">
-	<Trace />
+<div class="content">
+	<Speak />
 </div>
 
 <style>
@@ -25,7 +25,7 @@
 		flex-direction: column;
 		overflow: hidden;
 	}
-	.trace {
+	.content {
 		padding: 40px;
 		height: 100%;
 	}
