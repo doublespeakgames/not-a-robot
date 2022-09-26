@@ -5,7 +5,7 @@ import { pixels, RGBToHSV, type HSV } from '$lib/image';
 // Small is okay. We just want brightness.
 const SIZE = 16;
 
-export default writable<HSV>({ h: 0, s: 0, v: 0 }, (set) => {
+export default writable<Array<HSV>>([], (set) => {
 	if (!browser) {
 		return;
 	}
@@ -28,20 +28,7 @@ export default writable<HSV>({ h: 0, s: 0, v: 0 }, (set) => {
 			requestAnimationFrame(function sample() {
 				!killed && requestAnimationFrame(sample);
 				ctx.drawImage(video, 0, 0, SIZE, SIZE);
-				let numPixels = 0;
-				const total: HSV = { h: 0, s: 0, v: 0 };
-				for (const pixel of pixels(canvas)) {
-					const { h, s, v } = RGBToHSV(pixel);
-					total.h += h;
-					total.s += s;
-					total.v += v;
-					numPixels++;
-				}
-				set({
-					h: total.h / numPixels,
-					s: total.s / numPixels,
-					v: total.v / numPixels
-				});
+				set([...pixels(canvas)].map(RGBToHSV));
 			});
 		})
 		.catch((err) => {

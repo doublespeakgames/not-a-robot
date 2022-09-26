@@ -1,14 +1,16 @@
 <script type="ts">
-	import Speak from './Speak.svelte';
+	import NotARobot from './NotARobot.svelte';
+	import Trace from './Trace.svelte';
 </script>
 
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="content">
-	<Speak />
-</div>
+<main class="content">
+	<NotARobot />
+	<!-- <Trace /> -->
+</main>
 
 <style>
 	:global(html) {
@@ -21,12 +23,13 @@
 	:global(body) {
 		margin: 0;
 		height: 100%;
-		display: flex;
-		flex-direction: column;
 		overflow: hidden;
 	}
 	.content {
 		padding: 40px;
 		height: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 	}
 </style>

@@ -2,8 +2,11 @@
 	import { pixels } from '$lib/image';
 
 	export let guide = 'pentagram';
+	export let oncomplete = () => {};
 
-	const COMPARE_SIZE = 312;
+	const DEBUG = false;
+	const COV_THRESHOLD = 0.9;
+	const ACC_THRESHOLD = 1;
 	const LINE_SIZE = 10;
 	const TOLERANCE = 3;
 
@@ -27,7 +30,8 @@
 
 	const compare = () => {
 		const canvas = document.createElement('canvas');
-		canvas.width = canvas.height = COMPARE_SIZE;
+		canvas.width = width;
+		canvas.height = height;
 		const ctx = canvas.getContext('2d');
 		if (!ctx) {
 			return;
@@ -38,6 +42,7 @@
 		ctx.lineWidth = LINE_SIZE * TOLERANCE;
 		ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
 		ctx.stroke(new Path2D(path));
+		DEBUG && console.log(canvas.toDataURL('image/png'));
 		let onTarget = 0;
 		let targetTotal = 0;
 		let inputTotal = 0;
@@ -59,6 +64,10 @@
 		}
 		coverage = onTarget / targetTotal;
 		accuracy = onTarget / (inputTotal / TOLERANCE);
+
+		if (coverage >= COV_THRESHOLD && accuracy >= ACC_THRESHOLD) {
+			oncomplete();
+		}
 	};
 
 	$: guideUrl = `./${guide}.svg`;
@@ -81,7 +90,7 @@
 	{/if}
 </div>
 
-{#if coverage > 0}
+{#if DEBUG && coverage > 0}
 	<div class="score">
 		COV: %{Math.round(coverage * 100)}<br />
 		ACC: %{Math.round(accuracy * 100)}
