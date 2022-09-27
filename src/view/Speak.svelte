@@ -1,17 +1,17 @@
 <script type="ts">
+	import { fade } from 'svelte/transition';
 	import audio from '../store/audio';
 	import word from '../store/word';
+	import Narrative from './Narrative.svelte';
+	import NarrativeBlock from './NarrativeBlock.svelte';
 	import Oscilloscope from './Oscilloscope.svelte';
 
 	export let oncomplete: () => void;
 
 	type Status = 'in-progress' | 'failed' | 'complete';
 
-	const words = [
-		['Klaa', 'tu'],
-		['Bar', 'a', 'da'],
-		['Nik', 'to']
-	];
+	const NARRATIVE_DELAY = 5000;
+	const words = [['Ex', 'i', 'te'], ['et'], ['de', 'vor', 'a', 'te'], ['mun', 'dum']];
 
 	$: spoken = $word;
 	$: status = isValid(spoken, words);
@@ -48,33 +48,68 @@
 		}
 		return syllable < spoken[currIndex];
 	};
+
+	let active = false;
+	let step = 0;
 </script>
 
-<div class="wrapper">
-	<Oscilloscope data={$audio} />
-	<div class="words">
-		{#each words as word, wordIndex}
-			<div class="word">
-				{#each word as syllable, syllableIndex}
-					<div class="syllable" class:active={isActive(wordIndex, syllableIndex, spoken)}>
-						{syllable}
-					</div>
-				{/each}
-			</div>
-		{/each}
-	</div>
+<div class="narrative">
+	{#if step === 0}
+		<NarrativeBlock
+			lines={[`You're probably a human?`, `Just one last thing...`, '']}
+			delay={NARRATIVE_DELAY}
+			oncomplete={() => {
+				step = 1;
+				active = true;
+			}}
+		/>
+	{:else}
+		<Narrative text="only a human can speak the words" delay={100} glitchDelay={200} />
+	{/if}
 </div>
+
+{#if active}
+	<div class="wrapper" transition:fade|local={{ duration: 1000 }}>
+		<div class="osc">
+			<Oscilloscope data={$audio} />
+		</div>
+		<div class="words">
+			{#each words as word, wordIndex}
+				<div class="word">
+					{#each word as syllable, syllableIndex}
+						<div class="syllable" class:active={isActive(wordIndex, syllableIndex, spoken)}>
+							{syllable}
+						</div>
+					{/each}
+				</div>
+			{/each}
+		</div>
+	</div>
+{/if}
 
 <style>
 	.wrapper {
-		display: flex;
-		flex-direction: column;
+		border: 1px solid;
+		position: relative;
+		margin-top: 10px;
+	}
+	.osc {
+		opacity: 0.4;
 	}
 	.words {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 		display: flex;
-		gap: 10px;
+		column-gap: 10px;
 		font-weight: bold;
 		font-size: 28px;
+		align-items: center;
+		align-content: center;
+		justify-content: center;
+		flex-wrap: wrap;
 	}
 	.word {
 		display: flex;
@@ -84,5 +119,8 @@
 	}
 	.syllable.active {
 		opacity: 1;
+	}
+	.narrative {
+		min-height: 1rem;
 	}
 </style>

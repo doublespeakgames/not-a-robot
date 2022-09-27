@@ -67,6 +67,8 @@
 
 		if (coverage >= COV_THRESHOLD && accuracy >= ACC_THRESHOLD) {
 			oncomplete();
+		} else {
+			points = [];
 		}
 	};
 

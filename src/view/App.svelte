@@ -24,7 +24,7 @@
 		overflow: hidden;
 	}
 	.content {
-		padding: 40px;
+		padding: 30px;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
