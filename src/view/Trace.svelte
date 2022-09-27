@@ -1,7 +1,7 @@
 <script type="ts">
 	import { pixels } from '$lib/image';
 
-	export let guide = 'pentagram';
+	export let guide: string;
 	export let oncomplete = () => {};
 
 	const DEBUG = false;
@@ -37,7 +37,7 @@
 			return;
 		}
 		const targetImg = new Image();
-		targetImg.src = guideUrl;
+		targetImg.src = guide;
 		ctx.drawImage(targetImg, 0, 0);
 		ctx.lineWidth = LINE_SIZE * TOLERANCE;
 		ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
@@ -70,13 +70,12 @@
 		}
 	};
 
-	$: guideUrl = `./${guide}.svg`;
 	$: path = points.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x},${y}`).join(' ');
 </script>
 
 <div
 	class="wrapper"
-	style:--guide={`url(${guideUrl})`}
+	style:--guide={`url(${guide})`}
 	bind:clientHeight={height}
 	bind:clientWidth={width}
 	on:pointerdown={ondown}
