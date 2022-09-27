@@ -1,4 +1,5 @@
 <script type="ts">
+	import { fade } from 'svelte/transition';
 	import Button from './Button.svelte';
 	import Spinner from './Spinner.svelte';
 
@@ -14,10 +15,11 @@
 	const labelText = (attempt: number) => {
 		switch (attempt) {
 			case 1:
-				return 'Type the characters that you see below';
+				return 'Type the characters that you see below:';
 			case 2:
+				return 'Nope, try again:';
 			case 3:
-				return 'Nope, try again';
+				return `Are you sure you're not a robot?`;
 		}
 	};
 
@@ -35,7 +37,7 @@
 </script>
 
 <form class="wrapper" on:submit={submit}>
-	<div class="label">{labelText(attempt)}:</div>
+	<div class="label">{labelText(attempt)}</div>
 	<div class="image">TODO</div>
 	<input
 		type="text"
@@ -48,7 +50,7 @@
 	/>
 	<div class="verify">
 		{#if verifying}
-			<div class="spin">
+			<div class="spin" transition:fade={{ duration: 200 }}>
 				<Spinner size={30} />
 			</div>
 		{/if}

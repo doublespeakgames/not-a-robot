@@ -2,14 +2,14 @@
 	import type { ChangeEvent } from '$lib/event';
 	import Checkbox from './Checkbox.svelte';
 	import Spinner from './Spinner.svelte';
-	import { slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import TextCaptcha from './TextCaptcha.svelte';
 	import Pulse from './Pulse.svelte';
 	import Speak from './Speak.svelte';
 	import Ritual from './Ritual.svelte';
 	import Epilogue from './Epilogue.svelte';
 
-	const VERIFY_TIME = 1000; // ms
+	const VERIFY_TIME = 2000; // ms
 
 	let verifying = false;
 	let locked = false;
@@ -33,11 +33,21 @@
 	<div class="wrapper">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="label">
-			{#if verifying}
-				<Spinner size={24} />
-			{:else}
-				<Checkbox disabled={locked || verifying} checked={locked || verifying} onchange={oncheck} />
-			{/if}
+			<div class="spacer">
+				{#if verifying}
+					<div class="spin" transition:fade={{ duration: 200 }}>
+						<Spinner size={24} />
+					</div>
+				{:else}
+					<div class="spin" transition:fade={{ duration: 200 }}>
+						<Checkbox
+							disabled={locked || verifying}
+							checked={locked || verifying}
+							onchange={oncheck}
+						/>
+					</div>
+				{/if}
+			</div>
 			<div class="not-a-robot">I am not a robot</div>
 		</label>
 		{#if enhanced}
@@ -79,5 +89,13 @@
 	.enhanced-label {
 		margin-bottom: 10px;
 		font-weight: bold;
+	}
+	.spacer {
+		height: 24px;
+		width: 24px;
+	}
+	.spin {
+		position: absolute;
+		line-height: 0;
 	}
 </style>

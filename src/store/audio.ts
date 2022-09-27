@@ -7,9 +7,11 @@ export default writable<Uint8Array>(new Uint8Array(), (set) => {
 	}
 
 	let killed = false;
+	let stream: MediaStream | null = null;
 	navigator.mediaDevices
 		.getUserMedia({ audio: true })
 		.then((mediaStream) => {
+			stream = mediaStream;
 			const context = new AudioContext();
 			const source = context.createMediaStreamSource(mediaStream);
 			const analyser = context.createAnalyser();
@@ -31,5 +33,6 @@ export default writable<Uint8Array>(new Uint8Array(), (set) => {
 
 	return () => {
 		killed = true;
+		stream?.getTracks().forEach((t) => t.stop());
 	};
 });

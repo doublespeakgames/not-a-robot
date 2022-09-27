@@ -1,6 +1,5 @@
 <script type="ts">
 	import NotARobot from './NotARobot.svelte';
-	import Trace from './Trace.svelte';
 </script>
 
 <svelte:head>
@@ -9,7 +8,6 @@
 
 <main class="content">
 	<NotARobot />
-	<!-- <Trace /> -->
 </main>
 
 <style>

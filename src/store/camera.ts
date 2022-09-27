@@ -11,10 +11,12 @@ export default writable<Array<HSV>>([], (set) => {
 	}
 
 	let killed = false;
+	let stream: MediaStream | null = null;
+	const video = document.createElement('video');
 	navigator.mediaDevices
 		.getUserMedia({ video: { facingMode: 'user' } })
 		.then((mediaStream) => {
-			const video = document.createElement('video');
+			stream = mediaStream;
 			const canvas = document.createElement('canvas');
 			canvas.width = canvas.height = SIZE;
 			const ctx = canvas.getContext('2d');
@@ -37,6 +39,9 @@ export default writable<Array<HSV>>([], (set) => {
 		});
 
 	return () => {
+		video.pause();
+		stream?.getTracks().forEach((t) => t.stop());
+		stream = null;
 		killed = true;
 	};
 });
