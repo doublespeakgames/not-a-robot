@@ -2,10 +2,26 @@
 	export let text: string;
 	export let delay = 0;
 	export let glitchDelay = 0;
+	export let oncomplete = () => {};
 
+	let bold = false;
+	let index = 0;
 	const type = () => {
-		current = `${current}${text[current.length]}`;
-		text.length > current.length && setTimeout(type, delay);
+		const nextChar = text[index++];
+		if (nextChar !== '*') {
+			current = `${current}${nextChar}`;
+		} else {
+			current = `${current}${
+				bold ? '</span>' : '<span style="font-weight:bold; font-style:italic">'
+			}`;
+			bold = !bold;
+		}
+		const d = nextChar === '*' ? delay * 2 : delay;
+		if (text.length > index) {
+			setTimeout(type, d);
+		} else {
+			oncomplete();
+		}
 	};
 
 	const glitch = () => {
@@ -21,7 +37,7 @@
 </script>
 
 <div class="wrapper">
-	{current}
+	{@html current}
 </div>
 
 <style>

@@ -2,6 +2,9 @@
 	import { fade } from 'svelte/transition';
 	import Button from './Button.svelte';
 	import Spinner from './Spinner.svelte';
+	import captcha1 from '$lib/assets/captcha-1.png';
+	import captcha2 from '$lib/assets/captcha-2.png';
+	import captcha3 from '$lib/assets/captcha-3.png';
 
 	const VERIFY_TIME = 1000;
 	const ATTEMPTS = 3;
@@ -19,7 +22,18 @@
 			case 2:
 				return 'Nope, try again:';
 			case 3:
-				return `Are you sure you're not a robot?`;
+				return `One last chance, robot:`;
+		}
+	};
+
+	const captcha = (attempt: number) => {
+		switch (attempt) {
+			case 1:
+				return captcha1;
+			case 2:
+				return captcha2;
+			case 3:
+				return captcha3;
 		}
 	};
 
@@ -38,7 +52,7 @@
 
 <form class="wrapper" on:submit={submit}>
 	<div class="label">{labelText(attempt)}</div>
-	<div class="image">TODO</div>
+	<div class="image" style:--img={`url(${captcha(attempt)})`} />
 	<input
 		type="text"
 		required
@@ -70,6 +84,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-image: var(--img);
 	}
 	.input {
 		padding: 5px 10px;

@@ -1,10 +1,14 @@
 <script type="ts">
 	import Compass from './Compass.svelte';
 	import Trace from './Trace.svelte';
-	import pentagram from '$lib/assets/pentagram.svg';
 	import NarrativeBlock from './NarrativeBlock.svelte';
 	import { fade } from 'svelte/transition';
 	import compass from '../store/compass';
+
+	import othalan from '$lib/assets/othalan.svg';
+	import pertho from '$lib/assets/pertho.svg';
+	import raido from '$lib/assets/raido.svg';
+	import iwaz from '$lib/assets/iwaz.svg';
 
 	type Step = {
 		dir: keyof typeof directions;
@@ -48,19 +52,19 @@
 	const steps: Array<Step> = [
 		{
 			dir: 'south',
-			shape: pentagram
+			shape: othalan
 		},
 		{
 			dir: 'north',
-			shape: pentagram
+			shape: raido
 		},
 		{
 			dir: 'west',
-			shape: pentagram
+			shape: pertho
 		},
 		{
 			dir: 'east',
-			shape: pentagram
+			shape: iwaz
 		}
 	];
 
@@ -85,7 +89,7 @@
 				'So your pulse is a little... odd',
 				'You might still be a robot',
 				'Humans can move around in space, right?',
-				`If you can turn, you're probably a human`
+				`If you can turn, maybe you're a human`
 			]}
 			delay={NARRATIVE_DELAY}
 			oncomplete={() => (compassEnabled = true)}
@@ -93,7 +97,7 @@
 	{:else if narrativeStep === 1}
 		<NarrativeBlock
 			lines={[
-				`Okay, that's a good data point`,
+				`Hm, some robots can turn too...`,
 				`I'm pretty sure humans have fingers`,
 				`You should be able to trace this shape`
 			]}
@@ -123,7 +127,7 @@
 	{/if}
 	{#if traceEnabled && facing}
 		<div transition:fade|local={{ duration: 200 }}>
-			<Trace oncomplete={ontrace} guide={pentagram} />
+			<Trace oncomplete={ontrace} guide={steps[step].shape} />
 		</div>
 	{/if}
 </div>

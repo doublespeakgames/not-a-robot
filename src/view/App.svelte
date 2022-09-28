@@ -1,4 +1,5 @@
 <script type="ts">
+	import Logo from './Logo.svelte';
 	import NotARobot from './NotARobot.svelte';
 </script>
 
@@ -9,6 +10,12 @@
 <main class="content">
 	<NotARobot />
 </main>
+
+<nav>
+	<a href="https://www.doublespeakgames.com" target="_blank">
+		<Logo />
+	</a>
+</nav>
 
 <style>
 	:global(html) {
@@ -29,5 +36,14 @@
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
+	}
+	nav {
+		width: 40px;
+		position: absolute;
+		bottom: 5px;
+		left: 10px;
+		line-height: 0;
+		fill: none;
+		stroke: #ccc;
 	}
 </style>

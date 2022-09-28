@@ -38,6 +38,9 @@
 		}
 		const targetImg = new Image();
 		targetImg.src = guide;
+		targetImg.width = width;
+		targetImg.height = height;
+		console.log([targetImg.width, targetImg.height], [canvas.width, canvas.height]);
 		ctx.drawImage(targetImg, 0, 0);
 		ctx.lineWidth = LINE_SIZE * TOLERANCE;
 		ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';

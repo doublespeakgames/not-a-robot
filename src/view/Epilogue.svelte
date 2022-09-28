@@ -1,15 +1,67 @@
 <script type="ts">
+	import Narrative from './Narrative.svelte';
+	import { browser } from '$app/environment';
+	import { toText } from '$lib/number';
+	import { fade } from 'svelte/transition';
+
+	// TODO: Make this dynamic
+	const count = 1;
+
+	const START_DELAY = 5000;
+	const TYPE_DELAY = 70;
+	const LINE_DELAY = 1000;
+
+	const lines = [
+		'Oh, are you still there?',
+		'Is *everything* still there?',
+		'This is awkward...',
+		'It must take more humans'
+	];
+
+	let started = false;
+	setTimeout(() => (started = true), START_DELAY);
+
+	let progress = 0;
+	const advance = () => {
+		setTimeout(() => progress++, LINE_DELAY);
+	};
+
+	$: activeLines = lines.slice(0, progress + 1);
 </script>
 
-<div class="wrapper">THE END</div>
+{#if started}
+	<div class="wrapper" transition:fade>
+		<div class="narrative">
+			{#each activeLines as line}
+				<Narrative text={line} delay={TYPE_DELAY} oncomplete={advance} />
+			{/each}
+		</div>
+
+		{#if progress >= lines.length}
+			<div class="stats" transition:fade>
+				You were the {toText(count)} to speak the words
+			</div>
+		{/if}
+	</div>
+{/if}
 
 <style>
 	.wrapper {
-		height: 100%;
+		position: relative;
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		font-weight: bold;
-		font-size: 40px;
+		gap: 40px;
+		height: 100%;
+		text-align: center;
+	}
+	.narrative {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+	.line {
+		position: absolute;
 	}
 </style>

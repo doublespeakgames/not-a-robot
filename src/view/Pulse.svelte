@@ -51,7 +51,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
-		min-height: 50px;
+		min-height: 2rem;
 	}
 	.narrative {
 		height: 20px;
@@ -59,8 +59,11 @@
 	.pulse {
 		border: 1px solid;
 		text-align: center;
-		padding: 30px;
 		position: relative;
+		height: 100px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	.pulse::before {
 		content: '';
