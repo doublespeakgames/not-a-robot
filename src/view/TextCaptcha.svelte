@@ -85,6 +85,7 @@
 		justify-content: center;
 		align-items: center;
 		background-image: var(--img);
+		background-size: cover;
 	}
 	.input {
 		padding: 5px 10px;

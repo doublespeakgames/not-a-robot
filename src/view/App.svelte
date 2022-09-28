@@ -29,13 +29,18 @@
 		margin: 0;
 		height: 100%;
 		overflow: hidden;
+		display: flex;
+		justify-content: center;
 	}
 	.content {
 		padding: 30px;
-		height: 100%;
+		height: 75%;
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 		gap: 10px;
+		max-width: 500px;
+		width: 100%;
 	}
 	nav {
 		width: 40px;
