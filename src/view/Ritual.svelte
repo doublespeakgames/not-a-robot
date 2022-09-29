@@ -2,7 +2,7 @@
 	import Compass from './Compass.svelte';
 	import Trace from './Trace.svelte';
 	import NarrativeBlock from './NarrativeBlock.svelte';
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import compass from '../store/compass';
 
 	import othalan from '$lib/assets/othalan.svg';
@@ -15,8 +15,8 @@
 		shape: string;
 	};
 
-	const NARRATIVE_DELAY = 5000;
-	const COMPASS_THRESHOLD = 3; // degrees
+	const NARRATIVE_DELAY = 4000;
+	const COMPASS_THRESHOLD = 6; // degrees
 	const FACING_TIMER = 2000;
 
 	export let oncomplete: () => void;
@@ -106,7 +106,7 @@
 		/>
 	{:else}
 		<NarrativeBlock
-			lines={[`I'm like %25 sure you're human`, `Just a couple more samples...`]}
+			lines={[`You're starting to convince me`, `Just a couple more runes...`]}
 			delay={NARRATIVE_DELAY}
 			oncomplete={() => {
 				step = 1;
@@ -118,7 +118,7 @@
 
 <div class="wrapper">
 	{#if compassEnabled}
-		<div transition:fade|local={{ duration: 200 }}>
+		<div transition:slide>
 			<Compass />
 			<div class="compass-target" class:active={facing}>
 				Face {target}
@@ -126,7 +126,7 @@
 		</div>
 	{/if}
 	{#if traceEnabled && facing}
-		<div transition:fade|local={{ duration: 200 }}>
+		<div class="trace" transition:slide>
 			<Trace oncomplete={ontrace} guide={steps[step].shape} />
 		</div>
 	{/if}
@@ -152,5 +152,9 @@
 	}
 	.compass-target.active {
 		opacity: 1;
+	}
+	.trace {
+		display: flex;
+		justify-content: center;
 	}
 </style>

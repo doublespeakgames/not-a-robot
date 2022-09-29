@@ -1,5 +1,5 @@
 <script type="ts">
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import Button from './Button.svelte';
 	import Spinner from './Spinner.svelte';
 	import captcha1 from '$lib/assets/captcha-1.png';
@@ -50,7 +50,7 @@
 	};
 </script>
 
-<form class="wrapper" on:submit={submit}>
+<form class="wrapper" on:submit={submit} transition:slide|local>
 	<div class="label">{labelText(attempt)}</div>
 	<div class="image" style:--img={`url(${captcha(attempt)})`} />
 	<input

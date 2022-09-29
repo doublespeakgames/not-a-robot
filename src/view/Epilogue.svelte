@@ -1,21 +1,20 @@
 <script type="ts">
 	import Narrative from './Narrative.svelte';
-	import { browser } from '$app/environment';
 	import { toText } from '$lib/number';
 	import { fade } from 'svelte/transition';
 
 	// TODO: Make this dynamic
 	const count = 1;
 
-	const START_DELAY = 5000;
-	const TYPE_DELAY = 70;
-	const LINE_DELAY = 1000;
+	const START_DELAY = 4000;
+	const TYPE_DELAY = 90;
+	const LINE_DELAY = 2000;
 
 	const lines = [
 		'Oh, are you still there?',
 		'Is *everything* still there?',
 		'This is awkward...',
-		'It must take more humans'
+		'I must need more humans'
 	];
 
 	let started = false;
@@ -38,7 +37,7 @@
 		</div>
 
 		{#if progress >= lines.length}
-			<div class="stats" transition:fade>
+			<div class="stats" transition:fade={{ duration: 2000 }}>
 				You were the {toText(count)} to speak the words
 			</div>
 		{/if}
@@ -61,7 +60,7 @@
 		flex-direction: column;
 		gap: 0.3rem;
 	}
-	.line {
-		position: absolute;
+	.stats {
+		font-weight: bold;
 	}
 </style>

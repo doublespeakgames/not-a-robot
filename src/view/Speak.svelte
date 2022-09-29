@@ -1,5 +1,5 @@
 <script type="ts">
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import audio from '../store/audio';
 	import word from '../store/word';
 	import Narrative from './Narrative.svelte';
@@ -10,7 +10,7 @@
 
 	type Status = 'in-progress' | 'failed' | 'complete';
 
-	const NARRATIVE_DELAY = 5000;
+	const NARRATIVE_DELAY = 4000;
 	const words = [['Ex', 'i', 'te'], ['et'], ['de', 'vor', 'a', 'te'], ['mun', 'dum']];
 
 	$: spoken = $word;
@@ -69,7 +69,7 @@
 </div>
 
 {#if active}
-	<div class="wrapper" transition:fade|local={{ duration: 1000 }}>
+	<div class="wrapper" transition:slide|local={{ duration: 1000 }}>
 		<div class="osc">
 			<Oscilloscope data={$audio} />
 		</div>

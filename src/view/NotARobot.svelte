@@ -14,7 +14,7 @@
 	let verifying = false;
 	let locked = false;
 	let enhanced = false;
-	let step = 0;
+	let step = 4;
 
 	const completeStep = () => {
 		step++;

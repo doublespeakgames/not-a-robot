@@ -16,7 +16,7 @@
 			}`;
 			bold = !bold;
 		}
-		const d = nextChar === '*' ? delay * 2 : delay;
+		const d = ['*', '.', ','].includes(nextChar) ? delay * 4 : delay;
 		if (text.length > index) {
 			setTimeout(type, d);
 		} else {

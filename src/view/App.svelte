@@ -8,7 +8,9 @@
 </svelte:head>
 
 <main class="content">
-	<NotARobot />
+	<div class="spacer">
+		<NotARobot />
+	</div>
 </main>
 
 <nav>
@@ -34,13 +36,16 @@
 	}
 	.content {
 		padding: 30px;
-		height: 75%;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		gap: 10px;
 		max-width: 500px;
 		width: 100%;
+	}
+	.spacer {
+		min-height: 333px;
 	}
 	nav {
 		width: 40px;

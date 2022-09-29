@@ -3,6 +3,7 @@
 
 	export let guide: string;
 	export let oncomplete = () => {};
+	export let size = 300;
 
 	const DEBUG = false;
 	const COV_THRESHOLD = 0.9;
@@ -10,8 +11,6 @@
 	const LINE_SIZE = 10;
 	const TOLERANCE = 3;
 
-	let width: number;
-	let height: number;
 	let points: Array<[number, number]> = [];
 	let accuracy = 0;
 	let coverage = 0;
@@ -30,16 +29,16 @@
 
 	const compare = () => {
 		const canvas = document.createElement('canvas');
-		canvas.width = width;
-		canvas.height = height;
+		canvas.width = size;
+		canvas.height = size;
 		const ctx = canvas.getContext('2d');
 		if (!ctx) {
 			return;
 		}
 		const targetImg = new Image();
 		targetImg.src = guide;
-		targetImg.width = width;
-		targetImg.height = height;
+		targetImg.width = size;
+		targetImg.height = size;
 		console.log([targetImg.width, targetImg.height], [canvas.width, canvas.height]);
 		ctx.drawImage(targetImg, 0, 0);
 		ctx.lineWidth = LINE_SIZE * TOLERANCE;
@@ -81,14 +80,13 @@
 <div
 	class="wrapper"
 	style:--guide={`url(${guide})`}
-	bind:clientHeight={height}
-	bind:clientWidth={width}
+	style:--size={`${size}px`}
 	on:pointerdown={ondown}
 	on:pointermove={onmove}
 	on:pointerup={onup}
 >
 	{#if points.length > 0}
-		<svg class="svg" viewBox={`0 0 ${width} ${height}`} style:--lineSize={LINE_SIZE}>
+		<svg class="svg" viewBox={`0 0 ${size} ${size}`} style:--lineSize={LINE_SIZE}>
 			<path d={path} />
 		</svg>
 	{/if}
@@ -103,9 +101,8 @@
 
 <style>
 	.wrapper {
-		max-width: 100%;
-		max-height: 100%;
-		aspect-ratio: 1/1;
+		width: var(--size);
+		height: var(--size);
 		touch-action: none;
 		position: relative;
 		border: 2px solid;

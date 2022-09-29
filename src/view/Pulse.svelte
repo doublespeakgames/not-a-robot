@@ -1,11 +1,11 @@
 <script type="ts">
 	import type { HSV } from '$lib/image';
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import camera from '../store/camera';
 	import NarrativeBlock from './NarrativeBlock.svelte';
 
 	const MEASURE_TIME = 5000;
-	const NARRATIVE_DELAY = 5000;
+	const NARRATIVE_DELAY = 4000;
 
 	export let oncomplete: () => void;
 
@@ -22,7 +22,7 @@
 	}
 </script>
 
-<div class="wrapper">
+<div class="wrapper" transition:slide|local>
 	<div class="narrative">
 		<NarrativeBlock
 			lines={[
@@ -36,7 +36,7 @@
 		/>
 	</div>
 	{#if started}
-		<div class="pulse" class:measuring={covered} transition:fade|local={{ duration: 200 }}>
+		<div class="pulse" class:measuring={covered} transition:slide|local>
 			{#if covered}
 				Hold still while I measure your pulse...
 			{:else}
