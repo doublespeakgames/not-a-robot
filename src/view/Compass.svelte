@@ -1,18 +1,17 @@
 <script type="ts">
-	import { roundToPlaces } from '$lib/number';
-	import compass from '../store/compass';
+	export let bearing: number;
 
 	let width: number;
 
-	$: cosVal = Math.cos(($compass * Math.PI) / 180) / 2 + 0.5;
-	$: sinVal = Math.sin(($compass * Math.PI) / 180) / 2 + 0.5;
+	$: cosVal = Math.cos((bearing * Math.PI) / 180) / 2 + 0.5;
+	$: sinVal = Math.sin((bearing * Math.PI) / 180) / 2 + 0.5;
 </script>
 
 <div class="wrapper" bind:clientWidth={width}>
 	<div
 		class="compass"
 		style:--radius={`${width / 2}px`}
-		style:--rot={`${$compass}deg`}
+		style:--rot={`${bearing}deg`}
 		style:--cos={cosVal}
 		style:--sin={sinVal}
 	>

@@ -13,7 +13,8 @@
 
 	let started = false;
 	let timer: number | null = null;
-	$: covered = !$camera.find((hsv) => !pixelCovered(hsv));
+	$: noCamera = $camera.length === 0;
+	$: covered = $camera.length > 0 && !$camera.find((hsv) => !pixelCovered(hsv));
 	$: if (covered && !timer) {
 		timer = window.setTimeout(oncomplete, MEASURE_TIME);
 	} else if (!covered && timer) {
@@ -37,7 +38,11 @@
 	</div>
 	{#if started}
 		<div class="pulse" class:measuring={covered} transition:slide|local>
-			{#if covered}
+			{#if noCamera}
+				<div class="mock">
+					No camera? <br />Something to hide, robot?
+				</div>
+			{:else if covered}
 				Hold still while I measure your pulse...
 			{:else}
 				Place your thumb over the camera
@@ -80,5 +85,9 @@
 	.pulse.measuring::before {
 		transform: scale3d(1, 1, 1);
 		transition: transform 5000ms linear;
+	}
+	.mock {
+		text-align: center;
+		font-style: italic;
 	}
 </style>

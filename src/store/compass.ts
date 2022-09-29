@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
-export default writable(0, (set) => {
+export default writable<number | null>(null, (set) => {
 	if (!browser) {
 		return;
 	}

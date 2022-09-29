@@ -21,6 +21,8 @@
 
 	export let oncomplete: () => void;
 
+	$: console.log($compass); // TODO
+
 	let narrativeStep = 0;
 	let traceEnabled = false;
 	let compassEnabled = false;
@@ -119,10 +121,16 @@
 <div class="wrapper">
 	{#if compassEnabled}
 		<div transition:slide>
-			<Compass />
-			<div class="compass-target" class:active={facing}>
-				Face {target}
-			</div>
+			{#if $compass === null}
+				<div class="mock">
+					No compass? <br />Something to hide, robot?
+				</div>
+			{:else}
+				<Compass bearing={$compass} />
+				<div class="compass-target" class:active={facing}>
+					Face {target}
+				</div>
+			{/if}
 		</div>
 	{/if}
 	{#if traceEnabled && facing}
@@ -156,5 +164,9 @@
 	.trace {
 		display: flex;
 		justify-content: center;
+	}
+	.mock {
+		text-align: center;
+		font-style: italic;
 	}
 </style>

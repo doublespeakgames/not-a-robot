@@ -13,6 +13,7 @@
 	const NARRATIVE_DELAY = 4000;
 	const words = [['Ex', 'i', 'te'], ['et'], ['de', 'vor', 'a', 'te'], ['mun', 'dum']];
 
+	$: noMic = $audio.length === 0;
 	$: spoken = $word;
 	$: status = isValid(spoken, words);
 	$: if (status === 'failed') {
@@ -70,20 +71,26 @@
 
 {#if active}
 	<div class="wrapper" transition:slide|local={{ duration: 1000 }}>
-		<div class="osc">
-			<Oscilloscope data={$audio} />
-		</div>
-		<div class="words">
-			{#each words as word, wordIndex}
-				<div class="word">
-					{#each word as syllable, syllableIndex}
-						<div class="syllable" class:active={isActive(wordIndex, syllableIndex, spoken)}>
-							{syllable}
-						</div>
-					{/each}
-				</div>
-			{/each}
-		</div>
+		{#if noMic}
+			<div class="mock">
+				No microphone?<br />Something to hide, robot?
+			</div>
+		{:else}
+			<div class="osc">
+				<Oscilloscope data={$audio} />
+			</div>
+			<div class="words">
+				{#each words as word, wordIndex}
+					<div class="word">
+						{#each word as syllable, syllableIndex}
+							<div class="syllable" class:active={isActive(wordIndex, syllableIndex, spoken)}>
+								{syllable}
+							</div>
+						{/each}
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</div>
 {/if}
 
@@ -95,6 +102,7 @@
 	}
 	.osc {
 		opacity: 0.4;
+		line-height: 0;
 	}
 	.words {
 		position: absolute;
@@ -122,5 +130,13 @@
 	}
 	.narrative {
 		min-height: 1rem;
+	}
+	.mock {
+		text-align: center;
+		font-style: italic;
+		aspect-ratio: 2/1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
