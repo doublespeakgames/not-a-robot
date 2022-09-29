@@ -1,14 +1,8 @@
-import { browser } from '$app/environment';
 import RingBuffer from '$lib/ring-buffer';
 import { readable, get } from 'svelte/store';
 import audio from './audio';
 
-type Peak = {
-	time: number;
-	value: number;
-};
-
-const TIME_WINDOW = 300; //ms
+const TIME_WINDOW = 500; //ms
 const HIGH_THRESHOLD = 20;
 const LOW_THRESHOLD = -10;
 
