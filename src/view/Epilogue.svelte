@@ -1,10 +1,9 @@
 <script type="ts">
+	import { browser } from '$app/environment';
 	import Narrative from './Narrative.svelte';
 	import { toText } from '$lib/number';
 	import { fade } from 'svelte/transition';
-
-	// TODO: Make this dynamic
-	const count = 1;
+	import { increment } from '$lib/spoken';
 
 	const START_DELAY = 4000;
 	const TYPE_DELAY = 90;
@@ -16,6 +15,9 @@
 		'This is awkward...',
 		'I must need more humans'
 	];
+
+	let spoken: number | null = null;
+	browser && increment().then((n) => (spoken = n));
 
 	let started = false;
 	setTimeout(() => (started = true), START_DELAY);
@@ -36,9 +38,9 @@
 			{/each}
 		</div>
 
-		{#if progress >= lines.length}
+		{#if progress >= lines.length && spoken !== null}
 			<div class="stats" transition:fade={{ duration: 2000 }}>
-				You were the {toText(count)} to speak the words
+				You were the {toText(spoken)} to speak the words
 			</div>
 		{/if}
 	</div>

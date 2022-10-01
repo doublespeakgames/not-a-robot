@@ -31,7 +31,7 @@
 
 	$: target = steps[step].dir;
 	$: targetBearing = directions[target];
-	$: facing = Math.round(delta($compass, targetBearing)) <= COMPASS_THRESHOLD;
+	$: facing = $compass !== null && Math.round(delta($compass, targetBearing)) <= COMPASS_THRESHOLD;
 
 	$: if (compassEnabled && !traceEnabled && narrativeStep === 0 && facing && !timer) {
 		timer = window.setTimeout(() => (narrativeStep = 1), FACING_TIMER);
