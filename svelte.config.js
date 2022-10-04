@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from 'svelte-adapter-appengine';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
