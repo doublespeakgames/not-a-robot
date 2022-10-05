@@ -2,10 +2,23 @@
 	import Logo from './Logo.svelte';
 	import NotARobot from './NotARobot.svelte';
 	import Analytics from './Analytics.svelte';
+	import Metadata from './Metadata.svelte';
 </script>
 
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>not a robot :: doublespeak games</title>
+	<Metadata
+		data={{
+			type: 'website',
+			title: 'not a robot',
+			description: 'exclusive content, for humans only.',
+			url: 'https://not-a-robot.doublespeakgames.com',
+			image: 'https://media.doublespeakgames.com/notarobot-og.png',
+			imageWidth: 620,
+			imageHeight: 620
+		}}
+	/>
 </svelte:head>
 
 <Analytics />

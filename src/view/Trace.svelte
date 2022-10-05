@@ -10,7 +10,9 @@
 	const ACC_THRESHOLD = 1;
 	const LINE_SIZE = 10;
 	const TOLERANCE = 3;
+	const FAIL_DELAY = 300;
 
+	let failTimer: number | null = null;
 	let points: Array<[number, number]> = [];
 	let accuracy = 0;
 	let coverage = 0;
@@ -39,7 +41,6 @@
 		targetImg.src = guide;
 		targetImg.width = size;
 		targetImg.height = size;
-		console.log([targetImg.width, targetImg.height], [canvas.width, canvas.height]);
 		ctx.drawImage(targetImg, 0, 0);
 		ctx.lineWidth = LINE_SIZE * TOLERANCE;
 		ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
@@ -70,7 +71,10 @@
 		if (coverage >= COV_THRESHOLD && accuracy >= ACC_THRESHOLD) {
 			oncomplete();
 		} else {
-			points = [];
+			failTimer = window.setTimeout(() => {
+				failTimer = null;
+				points = [];
+			}, FAIL_DELAY);
 		}
 	};
 
@@ -79,11 +83,12 @@
 
 <div
 	class="wrapper"
+	class:fail={failTimer !== null}
 	style:--guide={`url(${guide})`}
 	style:--size={`${size}px`}
-	on:pointerdown={ondown}
-	on:pointermove={onmove}
-	on:pointerup={onup}
+	on:pointerdown={failTimer === null ? ondown : null}
+	on:pointermove={failTimer === null ? onmove : null}
+	on:pointerup={failTimer === null ? onup : null}
 >
 	{#if points.length > 0}
 		<svg class="svg" viewBox={`0 0 ${size} ${size}`} style:--lineSize={LINE_SIZE}>
@@ -127,6 +132,9 @@
 		stroke: black;
 		stroke-width: var(--lineSize);
 		pointer-events: none;
+	}
+	.fail .svg {
+		stroke: red;
 	}
 	.score {
 		font-size: 48px;

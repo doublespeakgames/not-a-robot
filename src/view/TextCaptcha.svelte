@@ -22,6 +22,7 @@
 			case 2:
 				return 'Nope, try again:';
 			case 3:
+			default:
 				return `One last chance, robot:`;
 		}
 	};
@@ -33,6 +34,7 @@
 			case 2:
 				return captcha2;
 			case 3:
+			default:
 				return captcha3;
 		}
 	};

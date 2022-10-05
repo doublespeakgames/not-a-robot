@@ -9,25 +9,26 @@
 	import pertho from '$lib/assets/pertho.svg';
 	import raido from '$lib/assets/raido.svg';
 	import iwaz from '$lib/assets/iwaz.svg';
+	import Spinner from './Spinner.svelte';
 
 	type Step = {
 		dir: keyof typeof directions;
 		shape: string;
 	};
 
+	const COMPLETE_DELAY = 2000;
 	const NARRATIVE_DELAY = 4000;
 	const COMPASS_THRESHOLD = 6; // degrees
 	const FACING_TIMER = 2000;
 
 	export let oncomplete: () => void;
 
-	$: console.log($compass); // TODO
-
 	let narrativeStep = 0;
 	let traceEnabled = false;
 	let compassEnabled = false;
 	let step = 0;
 	let timer: number | null = null;
+	let computing = false;
 
 	$: target = steps[step].dir;
 	$: targetBearing = directions[target];
@@ -40,12 +41,17 @@
 		timer = null;
 	}
 
+	const complete = () => {
+		computing = true;
+		setTimeout(oncomplete, COMPLETE_DELAY);
+	};
+
 	const ontrace = () => {
 		if (step === 0) {
 			traceEnabled = false;
 			narrativeStep = 2;
 		} else if (step === 3) {
-			oncomplete();
+			complete();
 		} else {
 			step++;
 		}
@@ -84,61 +90,71 @@
 	};
 </script>
 
-<div class="narrative">
-	{#if narrativeStep === 0}
-		<NarrativeBlock
-			lines={[
-				'So your pulse is a little... odd',
-				'You might still be a robot',
-				'Humans can move around in space, right?',
-				`If you can turn, maybe you're a human`
-			]}
-			delay={NARRATIVE_DELAY}
-			oncomplete={() => (compassEnabled = true)}
-		/>
-	{:else if narrativeStep === 1}
-		<NarrativeBlock
-			lines={[
-				`Hm, some robots can turn too...`,
-				`I'm pretty sure humans have fingers`,
-				`You should be able to trace this shape`
-			]}
-			delay={NARRATIVE_DELAY}
-			oncomplete={() => (traceEnabled = true)}
-		/>
-	{:else}
-		<NarrativeBlock
-			lines={[`You're starting to convince me`, `Just a couple more runes...`]}
-			delay={NARRATIVE_DELAY}
-			oncomplete={() => {
-				step = 1;
-				traceEnabled = true;
-			}}
-		/>
-	{/if}
-</div>
+{#if !computing}
+	<div class="narrative">
+		{#if narrativeStep === 0}
+			<NarrativeBlock
+				lines={[
+					'So your pulse is a little... odd',
+					'You might still be a robot',
+					'Humans can move around in space, right?',
+					`If you can turn, maybe you're a human`
+				]}
+				delay={NARRATIVE_DELAY}
+				oncomplete={() => (compassEnabled = true)}
+			/>
+		{:else if narrativeStep === 1}
+			<NarrativeBlock
+				lines={[
+					`Hm, some robots can turn too...`,
+					`I'm pretty sure humans have fingers`,
+					`You should be able to trace this shape`
+				]}
+				delay={NARRATIVE_DELAY}
+				oncomplete={() => (traceEnabled = true)}
+			/>
+		{:else}
+			<NarrativeBlock
+				lines={[`You're starting to convince me`, `Just a couple more runes...`]}
+				delay={NARRATIVE_DELAY}
+				oncomplete={() => {
+					step = 1;
+					traceEnabled = true;
+				}}
+			/>
+		{/if}
+	</div>
+{/if}
 
-<div class="wrapper">
-	{#if compassEnabled}
-		<div transition:slide>
-			{#if $compass === null}
-				<div class="mock">
-					No compass? <br />Something to hide, robot?
-				</div>
-			{:else}
-				<Compass bearing={$compass} />
-				<div class="compass-target" class:active={facing}>
-					Face {target}
-				</div>
-			{/if}
-		</div>
-	{/if}
-	{#if traceEnabled && facing}
-		<div class="trace" transition:slide>
-			<Trace oncomplete={ontrace} guide={steps[step].shape} />
-		</div>
-	{/if}
-</div>
+{#if computing}
+	<div class="spinner" in:fade>
+		<Spinner size={40} />
+	</div>
+{:else}
+	<div class="wrapper">
+		{#if compassEnabled}
+			<div transition:slide|local>
+				{#if $compass === null}
+					<div class="mock">
+						No compass? <br />Something to hide, robot?
+					</div>
+				{:else}
+					<div style="position:relative">
+						<Compass bearing={$compass} />
+						<div class="compass-target" class:active={facing}>
+							Face {target}
+						</div>
+					</div>
+				{/if}
+			</div>
+		{/if}
+		{#if !computing && traceEnabled && facing}
+			<div class="trace" transition:slide|local>
+				<Trace oncomplete={ontrace} guide={steps[step].shape} />
+			</div>
+		{/if}
+	</div>
+{/if}
 
 <style>
 	.wrapper {
@@ -155,11 +171,20 @@
 		font-weight: bold;
 		font-family: sans-serif;
 		text-transform: uppercase;
-		margin-top: 10px;
-		opacity: 0.4;
+		opacity: 0.1;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 48px;
+		transition: opacity 300ms;
 	}
 	.compass-target.active {
-		opacity: 1;
+		opacity: 0;
 	}
 	.trace {
 		display: flex;
@@ -168,5 +193,9 @@
 	.mock {
 		text-align: center;
 		font-style: italic;
+	}
+	.spinner {
+		display: flex;
+		justify-content: center;
 	}
 </style>
