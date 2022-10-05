@@ -1,11 +1,14 @@
 <script type="ts">
 	import Logo from './Logo.svelte';
 	import NotARobot from './NotARobot.svelte';
+	import Analytics from './Analytics.svelte';
 </script>
 
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
+
+<Analytics />
 
 <main class="content">
 	<div class="spacer">
