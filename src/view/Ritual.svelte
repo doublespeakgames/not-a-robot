@@ -184,7 +184,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 48px;
+		font-size: 42px;
 		transition: opacity 300ms;
 	}
 	.compass-target.active {

@@ -4,6 +4,7 @@
 	import camera from '../store/camera';
 
 	const MEASURE_TIME = 5000;
+	const TOLERANCE = 5;
 
 	export let oncomplete: () => void;
 
@@ -17,7 +18,7 @@
 	let timer: number | null = null;
 	$: noCamera = $camera.length === 0;
 	$: badPixels = $camera.filter((hsv) => !pixelCovered(hsv));
-	$: covered = $camera.length > 0 && badPixels.length === 0;
+	$: covered = $camera.length > 0 && badPixels.length <= TOLERANCE;
 	$: if (covered && !timer) {
 		timer = window.setTimeout(oncomplete, MEASURE_TIME);
 	} else if (!covered && timer) {
