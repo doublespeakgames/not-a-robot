@@ -20,6 +20,7 @@
 	const NARRATIVE_DELAY = 4000;
 	const COMPASS_THRESHOLD = 6; // degrees
 	const FACING_TIMER = 2000;
+	const LOCK_IN = 4;
 
 	export let oncomplete: () => void;
 
@@ -29,10 +30,13 @@
 	let step = 0;
 	let timer: number | null = null;
 	let computing = false;
+	let facing = false;
 
 	$: target = steps[step].dir;
 	$: targetBearing = directions[target];
-	$: facing = $compass !== null && Math.round(delta($compass, targetBearing)) <= COMPASS_THRESHOLD;
+	$: facing =
+		$compass !== null &&
+		Math.round(delta($compass, targetBearing)) <= COMPASS_THRESHOLD * (facing ? LOCK_IN : 1);
 
 	$: if (compassEnabled && !traceEnabled && narrativeStep === 0 && facing && !timer) {
 		timer = window.setTimeout(() => (narrativeStep = 1), FACING_TIMER);

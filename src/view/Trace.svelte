@@ -6,7 +6,7 @@
 	export let size = 300;
 
 	const DEBUG = false;
-	const COV_THRESHOLD = 0.9;
+	const COV_THRESHOLD = 0.8;
 	const ACC_THRESHOLD = 1;
 	const LINE_SIZE = 10;
 	const TOLERANCE = 3;
@@ -137,10 +137,10 @@
 		stroke: red;
 	}
 	.score {
-		font-size: 48px;
-		line-height: 2;
+		position: absolute;
 		font-weight: bold;
 		text-align: center;
 		opacity: 0.7;
+		bottom: 20px;
 	}
 </style>
